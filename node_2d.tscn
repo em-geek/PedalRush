@@ -1,0 +1,10 @@
+[gd_scene load_steps=3 format=3 uid="uid://jt4bjndcbfgv"]
+
+[ext_resource type="Script" path="res://node_2d.gd" id="1_jrksl"]
+[ext_resource type="Texture2D" uid="uid://tgsk2jyvhl8n" path="res://Mario.png" id="2_ha1lu"]
+
+[node name="Node2D" type="Node2D"]
+script = ExtResource("1_jrksl")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_ha1lu")
