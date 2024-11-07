@@ -1,58 +1,59 @@
 extends Node2D
 
-# Variables para el movimiento
-var speed = 0.0 # Velocidad actual de la bicicleta
-var max_speed = 400.0 # Velocidad máxima
-var acceleration = 200.0 # Aceleración al pedalear
-var friction = 100.0 # Fricción cuando se suelta el acelerador
+# Variables de movimiento para cada bicicleta
+var speeds = [0.0, 0.0, 0.0, 0.0] # Velocidades actuales de cada bicicleta
+var accelerations = [200.0, 200.0, 200.0, 200.0] # Aceleraciones de cada bicicleta
+var max_speeds = [400.0, 400.0, 400.0, 400.0] # Velocidades máximas de cada bicicleta
+var frictions = [100.0, 100.0, 100.0, 100.0] # Fricciones para cada bicicleta
 
-@onready var sprite = $Control/SeccionPista/Sprite2D # Asegúrate de que el nodo se llama "Sprite2D"
-@onready var seccion_pista = $Control/SeccionPista # Asegúrate de que el nodo se llama "SeccionPista"
+# Referencias a los cuatro sprites
+@onready var sprite1 = $Control/SeccionPista/Biker1
+@onready var sprite2 = $Control/SeccionPista/Biker2
+@onready var sprite3 = $Control/SeccionPista/Biker3
+@onready var sprite4 = $Control/SeccionPista/Biker4
+
+@onready var seccion_pista = $Control/SeccionPista # Sección de la pista
 
 # Función que se llama cada frame
 func _process(delta):
 	handle_input(delta)
-	update_position(delta)
-	handle_screen_wrap() # Llamamos a la función para el envolvimiento
+	update_positions(delta)
+	handle_screen_wrap()
 
-# Manejo de la entrada del usuario
+# Manejo de la entrada del usuario para cada bicicleta
 func handle_input(delta):
-	# Aumenta la velocidad cuando se presiona "gatillo" (simulando el pedaleo)
-	if Input.is_action_pressed("gatillo"):
-		speed += acceleration * delta
-		speed = min(speed, max_speed) # Limita la velocidad a la máxima
-	else:
-		# Aplica fricción para reducir la velocidad cuando se suelta "gatillo"
-		speed -= friction * delta
-		speed = max(speed, 0) # La velocidad no baja de cero
+	# Maneja el control individual de cada bicicleta
+	for i in range(4):
+		if Input.is_action_pressed("gatillo_" + str(i + 1)): # Ejemplo: gatillo_1, gatillo_2, etc.
+			speeds[i] += accelerations[i] * delta
+			speeds[i] = min(speeds[i], max_speeds[i]) # Limita la velocidad a la máxima
+		else:
+			# Aplica fricción para reducir la velocidad cuando se suelta el "gatillo"
+			speeds[i] -= frictions[i] * delta
+			speeds[i] = max(speeds[i], 0) # La velocidad no baja de cero
 
-# Actualiza la posición en el eje horizontal
-func update_position(delta):
-	sprite.position.x += speed * delta
-	
-# Función para manejar el envolvimiento de la pantalla
+# Actualiza las posiciones de cada bicicleta en el eje horizontal
+func update_positions(delta):
+	sprite1.position.x += speeds[0] * delta
+	sprite2.position.x += speeds[1] * delta
+	sprite3.position.x += speeds[2] * delta
+	sprite4.position.x += speeds[3] * delta
+
+# Función para manejar el envolvimiento de la pantalla para cada bicicleta
 func handle_screen_wrap():
-	# Obtener el tamaño de la ventana (tamaño de la pantalla)
 	var screen_width = get_viewport().size.x
-	var screen_height = get_viewport().size.y
-	
-	# Si el sprite se mueve fuera de la pantalla por la derecha
-	if sprite.position.x > screen_width:
-		sprite.position.x = 0 # Vuelve a aparecer en el lado izquierdo
 
-	# Si el sprite se mueve fuera de la pantalla por la izquierda
-	elif sprite.position.x < 0:
-		sprite.position.x = screen_width # Vuelve a aparecer en el lado derecho
-	
-	# Si el sprite se mueve fuera de la pantalla por abajo
-	if sprite.position.y > screen_height:
-		sprite.position.y = 0 # Vuelve a aparecer en la parte superior
-
-	# Si el sprite se mueve fuera de la pantalla por arriba
-	elif sprite.position.y < 0:
-		sprite.position.y = screen_height # Vuelve a aparecer en la parte inferior
+	# Manejo del envolvimiento para cada bicicleta
+	for sprite in [sprite1, sprite2, sprite3, sprite4]:
+		if sprite.position.x > screen_width:
+			sprite.position.x = 0
+		elif sprite.position.x < 0:
+			sprite.position.x = screen_width
 
 # Función que se llama cuando el nodo está listo
 func _ready():
 	var middle_height = seccion_pista.get_rect().size.y
-	sprite.position = Vector2(100, middle_height / 2) # Ajuste de altura
+	sprite1.position = Vector2(100, middle_height / 10)
+	sprite2.position = Vector2(100, middle_height / 3)
+	sprite3.position = Vector2(100, middle_height * 2 / 3)
+	sprite4.position = Vector2(100, middle_height * 9 / 10)# Muy cerca de la parte inferior

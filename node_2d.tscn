@@ -25,7 +25,19 @@ anchor_bottom = 0.8
 offset_right = 40.0
 offset_bottom = 40.0
 
-[node name="Sprite2D" type="Sprite2D" parent="Control/SeccionPista"]
+[node name="Biker1" type="Sprite2D" parent="Control/SeccionPista"]
+position = Vector2(0, -8)
+texture = ExtResource("2_ha1lu")
+
+[node name="Biker2" type="Sprite2D" parent="Control/SeccionPista"]
+position = Vector2(0, -8)
+texture = ExtResource("2_ha1lu")
+
+[node name="Biker3" type="Sprite2D" parent="Control/SeccionPista"]
+position = Vector2(0, -8)
+texture = ExtResource("2_ha1lu")
+
+[node name="Biker4" type="Sprite2D" parent="Control/SeccionPista"]
 position = Vector2(0, -8)
 texture = ExtResource("2_ha1lu")
 
