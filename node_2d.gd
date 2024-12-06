@@ -4,6 +4,11 @@ extends Node2D
 var speeds = [0.0, 0.0, 0.0, 0.0] # Velocidades actuales de cada bicicleta
 var max_speeds = [400.0, 400.0, 400.0, 400.0] # Velocidades máximas de cada bicicleta
 
+# Variables para distancia, tiempo y calorías
+var distances = [0.0, 0.0, 0.0, 0.0] # Distancia recorrida por cada bicicleta (km)
+var total_time = 0.0 # Tiempo total transcurrido (s)
+var calorie_factor = 30.0 # Factor para calcular calorías quemadas por km
+
 # Referencias a los cuatro sprites
 @onready var sprite1 = $Control/SeccionPista/Biker1
 @onready var sprite2 = $Control/SeccionPista/Biker2
@@ -22,6 +27,11 @@ var max_speeds = [400.0, 400.0, 400.0, 400.0] # Velocidades máximas de cada bic
 @onready var label3 = $Control/SeccionInfo/TablaPosicion/indicador3/Label3
 @onready var label4 = $Control/SeccionInfo/TablaPosicion/indicador4/Label4
 
+# Informacion sobre Distancia, Tiempo y Calorias
+@onready var labelCalorias = $Control/SeccionInfo/InformacionRecorrido/InfoTiempo/LabelT
+@onready var labelDistancia = $Control/SeccionInfo/InformacionRecorrido/InfoDistancia/LabelD
+@onready var labelTiempo = $Control/SeccionInfo/InformacionRecorrido/InfoCalorias/LabelC
+
 # Ruta al archivo JSON simulado
 var data_url = "res://data.json"
 var update_interval = 1.0 # Intervalo de actualización en segundos
@@ -29,6 +39,7 @@ var update_timer = 0.0
 
 func _process(delta):
 	update_timer += delta
+	total_time += delta  # Incrementa el tiempo total
 	if update_timer >= update_interval:
 		update_timer = 0
 		update_bicycle_speeds()
@@ -37,6 +48,7 @@ func _process(delta):
 	handle_screen_wrap()
 	update_positions_table()
 	update_bicycle_data_labels()
+	update_simulation_info(delta)  # Nueva función para actualizar calorías, distancia y tiempo
 
 # Lee los datos del archivo JSON y actualiza las velocidades
 func update_bicycle_speeds():
@@ -56,6 +68,11 @@ func update_bicycle_speeds():
 
 # Actualiza las posiciones de cada bicicleta en el eje horizontal
 func update_positions(delta):
+	for i in range(4): 
+		# Calcula la distancia recorrida para cada bicicleta 
+		var distance_delta = speeds[i] * (delta / 3600) # Convierte la velocidad de km/h a km/s 
+		distances[i] += distance_delta
+	# Actualiza las posiciones
 	sprite1.position.x += speeds[0] * delta
 	sprite2.position.x += speeds[1] * delta
 	sprite3.position.x += speeds[2] * delta
@@ -93,19 +110,37 @@ func update_bicycle_data_labels():
 	if label_datos_bici1:
 		label_datos_bici1.text = "🚴‍♂️ Bicicleta 1\nVelocidad: " + str(speeds[0]) + " km/h"
 		label_datos_bici1.add_theme_color_override("font_color", Color(1, 0, 0))  # Color rojo
+		label_datos_bici1.add_theme_font_size_override("font_size", 9)
 		label_datos_bici1.visible = true
 
 	if label_datos_bici2:
 		label_datos_bici2.text = "🚴‍♂️ Bicicleta 2\nVelocidad: " + str(speeds[1]) + " km/h"
 		label_datos_bici2.add_theme_color_override("font_color", Color(0, 1, 0))  # Color verde
+		label_datos_bici2.add_theme_font_size_override("font_size", 9)
 		label_datos_bici2.visible = true
 
 	if label_datos_bici3:
 		label_datos_bici3.text = "🚴‍♂️ Bicicleta 3\nVelocidad: " + str(speeds[2]) + " km/h"
 		label_datos_bici3.add_theme_color_override("font_color", Color(0, 0, 1))  # Color azul
+		label_datos_bici3.add_theme_font_size_override("font_size", 9)
 		label_datos_bici3.visible = true
 
 	if label_datos_bici4:
 		label_datos_bici4.text = "🚴‍♂️ Bicicleta 4\nVelocidad: " + str(speeds[3]) + " km/h"
 		label_datos_bici4.add_theme_color_override("font_color", Color(1, 1, 0))  # Color amarillo
+		label_datos_bici4.add_theme_font_size_override("font_size", 9)
 		label_datos_bici4.visible = true
+		
+# Actualiza solo la información de la simulación para la Bicicleta 1
+func update_simulation_info(delta):
+
+	# Calcula las calorías quemadas por la primera bicicleta
+	var total_calories = distances[0] * calorie_factor
+
+	# Actualiza los Labels
+	if labelDistancia:
+		labelDistancia.text = "Distancia:\n %.2f km" % distances[0]
+	if labelCalorias:
+		labelCalorias.text = "Calorías Quemadas:\n %.2f kcal" % total_calories
+	if labelTiempo:
+		labelTiempo.text = "Tiempo:\n %02d:%02d" % [int(total_time / 60), int(total_time) % 60]
