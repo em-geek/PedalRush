@@ -11,6 +11,12 @@ var frictions = [100.0, 100.0, 100.0, 100.0] # Fricciones para cada bicicleta
 @onready var sprite2 = $Control/SeccionPista/Biker2
 @onready var sprite3 = $Control/SeccionPista/Biker3
 @onready var sprite4 = $Control/SeccionPista/Biker4
+@onready var polygon2d = $Control/SeccionPista/BasePista
+
+@onready var label1 = $Control/SeccionInfo/TablaPosicion/indicador/Label1
+@onready var label2 = $Control/SeccionInfo/TablaPosicion/indicador2/Label2
+@onready var label3 = $Control/SeccionInfo/TablaPosicion/indicador3/Label3
+@onready var label4 = $Control/SeccionInfo/TablaPosicion/indicador4/Label4
 
 @onready var seccion_pista = $Control/SeccionPista # Sección de la pista
 
@@ -19,6 +25,8 @@ func _process(delta):
 	handle_input(delta)
 	update_positions(delta)
 	handle_screen_wrap()
+	update_positions_table()
+
 
 # Manejo de la entrada del usuario para cada bicicleta
 func handle_input(delta):
@@ -41,19 +49,37 @@ func update_positions(delta):
 
 # Función para manejar el envolvimiento de la pantalla para cada bicicleta
 func handle_screen_wrap():
-	var screen_width = get_viewport().size.x
+	var pista_start = 0  # Inicio de la pista
+	var pista_end = 890  # Final de la pista
 
 	# Manejo del envolvimiento para cada bicicleta
 	for sprite in [sprite1, sprite2, sprite3, sprite4]:
-		if sprite.position.x > screen_width:
-			sprite.position.x = 0
-		elif sprite.position.x < 0:
-			sprite.position.x = screen_width
+		if sprite.position.x > pista_end:
+			sprite.position.x = pista_start  # Regresa al inicio
+		elif sprite.position.x < pista_start:
+			sprite.position.x = pista_end  # Aparece al final
+			
+# Actualiza la tabla de posiciones 
+func update_positions_table(): 
+	var positions = [sprite1.position.x, sprite2.position.x, sprite3.position.x, sprite4.position.x] 
+	var sorted_indexes = [] 
+	var sorted_positions = positions.duplicate() 
+	sorted_positions.sort() 
+	
+	for pos in sorted_positions: sorted_indexes.append(positions.find(pos)) 
+	
+	# Actualiza las etiquetas con las posiciones 
+	label1.text = "Bicicleta " + str(sorted_indexes.find(0) + 1) + " (Primero)" 
+	label2.text = "Bicicleta " + str(sorted_indexes.find(1) + 1) + " (Segundo)" 
+	label3.text = "Bicicleta " + str(sorted_indexes.find(2) + 1) + " (Tercero)" 
+	label4.text = "Bicicleta " + str(sorted_indexes.find(3) + 1) + " (Cuarto)"
+# Actualiza las etiquetas con las posiciones label1.text = "Bicicleta " + str(sorted_indexes.find(0) + 1) + " (Primero)" label2.text = "Bicicleta " + str(sorted_indexes.find(1) + 1) + " (Segundo)" label3.text = "Bicicleta " + str(sorted_indexes.find(2) + 1) + " (Tercero)" label4.text = "Bicicleta " + str(sorted_indexes.find(3) + 1) + " (Cuarto)"
+
 
 # Función que se llama cuando el nodo está listo
-func _ready():
-	var middle_height = seccion_pista.get_rect().size.y
-	sprite1.position = Vector2(100, middle_height / 10)
-	sprite2.position = Vector2(100, middle_height / 3)
-	sprite3.position = Vector2(100, middle_height * 2 / 3)
-	sprite4.position = Vector2(100, middle_height * 9 / 10)# Muy cerca de la parte inferior
+#func _ready():
+#	var middle_height = seccion_pista.get_rect().size.y
+#	sprite1.position = Vector2(100, middle_height / 10)
+#	sprite2.position = Vector2(100, middle_height / 3)
+#	sprite3.position = Vector2(100, middle_height * 2 / 3)
+#	sprite4.position = Vector2(100, middle_height * 9 / 10)# Muy cerca de la parte inferior

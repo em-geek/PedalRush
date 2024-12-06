@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://jt4bjndcbfgv"]
 
 [ext_resource type="Script" path="res://node_2d.gd" id="1_jrksl"]
-[ext_resource type="Texture2D" uid="uid://tgsk2jyvhl8n" path="res://Mario.png" id="2_ha1lu"]
+[ext_resource type="Texture2D" uid="uid://djtqota2tjftu" path="res://Bici.png" id="2_3sgjp"]
 
 [node name="Node2D" type="Node2D"]
 script = ExtResource("1_jrksl")
@@ -11,12 +11,63 @@ layout_mode = 3
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
+metadata/_edit_use_anchors_ = true
 
 [node name="SeccionInfo" type="Control" parent="Control"]
 layout_mode = 1
 anchor_bottom = 0.2
 offset_right = 40.0
 offset_bottom = 40.0
+metadata/_edit_use_anchors_ = true
+
+[node name="TablaPosicion" type="Polygon2D" parent="Control/SeccionInfo"]
+position = Vector2(0, 8)
+color = Color(0.168627, 0.501961, 1, 1)
+polygon = PackedVector2Array(900, -8, 1152, -8, 1152, 278, 900, 278)
+
+[node name="indicador" type="Polygon2D" parent="Control/SeccionInfo/TablaPosicion"]
+position = Vector2(-2, 4)
+color = Color(0.352941, 0.239216, 0.352941, 1)
+polygon = PackedVector2Array(951, 10, 951, 36, 1104, 36, 1104, 10)
+
+[node name="Label1" type="Label" parent="Control/SeccionInfo/TablaPosicion/indicador"]
+offset_left = 951.0
+offset_top = 10.0
+offset_right = 1104.0
+offset_bottom = 36.0
+
+[node name="indicador2" type="Polygon2D" parent="Control/SeccionInfo/TablaPosicion"]
+position = Vector2(0, 75)
+color = Color(0.352941, 0.239216, 0.352941, 1)
+polygon = PackedVector2Array(951, 10, 951, 36, 1104, 36, 1104, 10)
+
+[node name="Label2" type="Label" parent="Control/SeccionInfo/TablaPosicion/indicador2"]
+offset_left = 951.0
+offset_top = 10.0
+offset_right = 1105.0
+offset_bottom = 36.0
+
+[node name="indicador3" type="Polygon2D" parent="Control/SeccionInfo/TablaPosicion"]
+position = Vector2(1, 149)
+color = Color(0.352941, 0.239216, 0.352941, 1)
+polygon = PackedVector2Array(951, 10, 951, 36, 1104, 36, 1104, 10)
+
+[node name="Label3" type="Label" parent="Control/SeccionInfo/TablaPosicion/indicador3"]
+offset_left = 950.0
+offset_top = 10.0
+offset_right = 1104.0
+offset_bottom = 36.0
+
+[node name="indicador4" type="Polygon2D" parent="Control/SeccionInfo/TablaPosicion"]
+position = Vector2(1, 220)
+color = Color(0.352941, 0.239216, 0.352941, 1)
+polygon = PackedVector2Array(951, 10, 951, 36, 1104, 36, 1104, 10)
+
+[node name="Label4" type="Label" parent="Control/SeccionInfo/TablaPosicion/indicador4"]
+offset_left = 951.0
+offset_top = 10.0
+offset_right = 1104.0
+offset_bottom = 36.0
 
 [node name="SeccionPista" type="Control" parent="Control"]
 layout_mode = 1
@@ -24,22 +75,44 @@ anchor_top = 0.2
 anchor_bottom = 0.8
 offset_right = 40.0
 offset_bottom = 40.0
+metadata/_edit_use_anchors_ = true
+
+[node name="BasePista" type="Polygon2D" parent="Control/SeccionPista"]
+position = Vector2(-86, 57)
+color = Color(0.0954428, 0.491361, 0.171693, 1)
+polygon = PackedVector2Array(86, -65, 986, -65, 986, 221, 86, 221)
+
+[node name="Division 1" type="Polygon2D" parent="Control/SeccionPista/BasePista"]
+position = Vector2(113, -16)
+polygon = PackedVector2Array(-27, 18, 873, 18, 873, 26, -27, 26)
+
+[node name="Division 2" type="Polygon2D" parent="Control/SeccionPista/BasePista"]
+position = Vector2(113, 57)
+polygon = PackedVector2Array(-27, 18, 873, 18, 873, 26, -27, 26)
+
+[node name="Division 3" type="Polygon2D" parent="Control/SeccionPista/BasePista"]
+position = Vector2(113, 130)
+polygon = PackedVector2Array(-27, 18, 873, 18, 873, 26, -27, 26)
 
 [node name="Biker1" type="Sprite2D" parent="Control/SeccionPista"]
-position = Vector2(0, -8)
-texture = ExtResource("2_ha1lu")
+position = Vector2(27, 26)
+scale = Vector2(0.01, 0.00996972)
+texture = ExtResource("2_3sgjp")
 
 [node name="Biker2" type="Sprite2D" parent="Control/SeccionPista"]
-position = Vector2(0, -8)
-texture = ExtResource("2_ha1lu")
+position = Vector2(27, 98)
+scale = Vector2(0.01, 0.01)
+texture = ExtResource("2_3sgjp")
 
 [node name="Biker3" type="Sprite2D" parent="Control/SeccionPista"]
-position = Vector2(0, -8)
-texture = ExtResource("2_ha1lu")
+position = Vector2(26, 169)
+scale = Vector2(0.01, 0.01)
+texture = ExtResource("2_3sgjp")
 
 [node name="Biker4" type="Sprite2D" parent="Control/SeccionPista"]
-position = Vector2(0, -8)
-texture = ExtResource("2_ha1lu")
+position = Vector2(30, 244)
+scale = Vector2(0.01, 0.01)
+texture = ExtResource("2_3sgjp")
 
 [node name="SeccionJugadores" type="Control" parent="Control"]
 layout_mode = 1
@@ -47,3 +120,4 @@ anchor_top = 0.8
 anchor_bottom = 1.0
 offset_right = 40.0
 offset_bottom = 40.0
+metadata/_edit_use_anchors_ = true
