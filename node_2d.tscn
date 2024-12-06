@@ -119,8 +119,126 @@ texture = ExtResource("5_ieo70")
 
 [node name="SeccionJugadores" type="Control" parent="Control"]
 layout_mode = 1
-anchor_top = 0.8
-anchor_bottom = 1.0
+anchor_left = 0.025
+anchor_top = 7.175
+anchor_right = 27.8
+anchor_bottom = 10.5
 offset_right = 40.0
 offset_bottom = 40.0
 metadata/_edit_use_anchors_ = true
+
+[node name="Datos" type="Polygon2D" parent="Control/SeccionJugadores"]
+position = Vector2(-3244, 3.99999)
+scale = Vector2(3.60318, 0.622378)
+color = Color(0.168627, 0.501961, 1, 1)
+polygon = PackedVector2Array(900, -8, 1152, -8, 1152, 278, 900, 278)
+
+[node name="DatoBicicleta1" type="Polygon2D" parent="Control/SeccionJugadores/Datos"]
+position = Vector2(533.21, -61.0562)
+scale = Vector2(0.387578, 8.23811)
+color = Color(0.352941, 0.239216, 0.352941, 1)
+polygon = PackedVector2Array(951, 10, 951, 36, 1104, 36, 1104, 22.8153, 1104, 10)
+
+[node name="CenterContainer" type="CenterContainer" parent="Control/SeccionJugadores/Datos/DatoBicicleta1"]
+offset_left = 955.774
+offset_top = 11.5072
+offset_right = 1098.77
+offset_bottom = 34.5072
+
+[node name="DatosBici1" type="Label" parent="Control/SeccionJugadores/Datos/DatoBicicleta1/CenterContainer"]
+layout_mode = 2
+
+[node name="DatoBicicleta2" type="Polygon2D" parent="Control/SeccionJugadores/Datos"]
+position = Vector2(595.586, -61.0562)
+scale = Vector2(0.387578, 8.23811)
+color = Color(0.352941, 0.239216, 0.352941, 1)
+polygon = PackedVector2Array(951, 10, 951, 36, 1104, 36, 1104, 22.8153, 1104, 10)
+
+[node name="CenterContainer" type="CenterContainer" parent="Control/SeccionJugadores/Datos/DatoBicicleta2"]
+offset_left = 959.0
+offset_top = 12.0
+offset_right = 1101.0
+offset_bottom = 35.0
+
+[node name="DatosBici2" type="Label" parent="Control/SeccionJugadores/Datos/DatoBicicleta2/CenterContainer"]
+layout_mode = 2
+
+[node name="DatoBicicleta3" type="Polygon2D" parent="Control/SeccionJugadores/Datos"]
+position = Vector2(657.753, -59.4494)
+scale = Vector2(0.387578, 8.23811)
+color = Color(0.352941, 0.239216, 0.352941, 1)
+polygon = PackedVector2Array(951, 10, 951, 36, 1104, 36, 1104, 22.8153, 1104, 10)
+
+[node name="CenterContainer" type="CenterContainer" parent="Control/SeccionJugadores/Datos/DatoBicicleta3"]
+offset_left = 955.953
+offset_top = 11.5072
+offset_right = 1101.95
+offset_bottom = 34.5072
+
+[node name="DatosBici3" type="Label" parent="Control/SeccionJugadores/Datos/DatoBicicleta3/CenterContainer"]
+layout_mode = 2
+
+[node name="DatoBicicleta4" type="Polygon2D" parent="Control/SeccionJugadores/Datos"]
+position = Vector2(720.476, -59.4494)
+scale = Vector2(0.387578, 8.23811)
+color = Color(0.352941, 0.239216, 0.352941, 1)
+polygon = PackedVector2Array(951, 10, 951, 36, 1104, 36, 1104, 22.8153, 1104, 10)
+
+[node name="CenterContainer" type="CenterContainer" parent="Control/SeccionJugadores/Datos/DatoBicicleta4"]
+offset_left = 957.0
+offset_top = 11.0
+offset_right = 1101.0
+offset_bottom = 34.0
+
+[node name="DatosBici4" type="Label" parent="Control/SeccionJugadores/Datos/DatoBicicleta4/CenterContainer"]
+layout_mode = 2
+
+[node name="TablaVueltas" type="Polygon2D" parent="Control/SeccionJugadores"]
+position = Vector2(30.3499, 4)
+scale = Vector2(0.972786, 0.622378)
+color = Color(0, 0.847459, 0.715106, 1)
+polygon = PackedVector2Array(900, -8, 1152, -8, 1152, 278, 900, 278)
+
+[node name="indicadorVuelta1" type="Polygon2D" parent="Control/SeccionJugadores/TablaVueltas"]
+position = Vector2(-2, 4)
+color = Color(0.352941, 0.239216, 0.352941, 1)
+polygon = PackedVector2Array(951, 10, 951, 36, 1104, 36, 1104, 10)
+
+[node name="LabelVuelta1" type="Label" parent="Control/SeccionJugadores/TablaVueltas/indicadorVuelta1"]
+offset_left = 951.0
+offset_top = 10.0
+offset_right = 1104.0
+offset_bottom = 36.0
+
+[node name="indicadorVuelta2" type="Polygon2D" parent="Control/SeccionJugadores/TablaVueltas"]
+position = Vector2(0, 75)
+color = Color(0.352941, 0.239216, 0.352941, 1)
+polygon = PackedVector2Array(951, 10, 951, 36, 1104, 36, 1104, 10)
+
+[node name="LabelVuelta2" type="Label" parent="Control/SeccionJugadores/TablaVueltas/indicadorVuelta2"]
+offset_left = 951.0
+offset_top = 10.0
+offset_right = 1105.0
+offset_bottom = 36.0
+
+[node name="indicadorVuelta3" type="Polygon2D" parent="Control/SeccionJugadores/TablaVueltas"]
+position = Vector2(1, 149)
+color = Color(0.352941, 0.239216, 0.352941, 1)
+polygon = PackedVector2Array(951, 10, 951, 36, 1104, 36, 1104, 10)
+
+[node name="LabelVuelta3" type="Label" parent="Control/SeccionJugadores/TablaVueltas/indicadorVuelta3"]
+offset_left = 950.0
+offset_top = 10.0
+offset_right = 1104.0
+offset_bottom = 36.0
+
+[node name="indicadorVuelta4" type="Polygon2D" parent="Control/SeccionJugadores/TablaVueltas"]
+position = Vector2(1, 220)
+color = Color(0.352941, 0.239216, 0.352941, 1)
+polygon = PackedVector2Array(951, 10, 951, 36, 1104, 36, 1104, 10)
+
+[node name="LabelVuelta4" type="Label" parent="Control/SeccionJugadores/TablaVueltas/indicadorVuelta4"]
+offset_left = 951.0
+offset_top = 10.0
+offset_right = 1104.0
+offset_bottom = 36.0

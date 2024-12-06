@@ -2,43 +2,57 @@ extends Node2D
 
 # Variables de movimiento para cada bicicleta
 var speeds = [0.0, 0.0, 0.0, 0.0] # Velocidades actuales de cada bicicleta
-var accelerations = [200.0, 200.0, 200.0, 200.0] # Aceleraciones de cada bicicleta
 var max_speeds = [400.0, 400.0, 400.0, 400.0] # Velocidades máximas de cada bicicleta
-var frictions = [100.0, 100.0, 100.0, 100.0] # Fricciones para cada bicicleta
 
 # Referencias a los cuatro sprites
 @onready var sprite1 = $Control/SeccionPista/Biker1
 @onready var sprite2 = $Control/SeccionPista/Biker2
 @onready var sprite3 = $Control/SeccionPista/Biker3
 @onready var sprite4 = $Control/SeccionPista/Biker4
-@onready var polygon2d = $Control/SeccionPista/BasePista
 
+# Referencias a las etiquetas de "Datos"
+@onready var label_datos_bici1 = $Control/SeccionJugadores/Datos/DatoBicicleta1/CenterContainer/DatosBici1
+@onready var label_datos_bici2 = $Control/SeccionJugadores/Datos/DatoBicicleta2/CenterContainer/DatosBici2
+@onready var label_datos_bici3 = $Control/SeccionJugadores/Datos/DatoBicicleta3/CenterContainer/DatosBici3
+@onready var label_datos_bici4 = $Control/SeccionJugadores/Datos/DatoBicicleta4/CenterContainer/DatosBici4
+
+# Referencias a las etiquetas de posiciones
 @onready var label1 = $Control/SeccionInfo/TablaPosicion/indicador/Label1
 @onready var label2 = $Control/SeccionInfo/TablaPosicion/indicador2/Label2
 @onready var label3 = $Control/SeccionInfo/TablaPosicion/indicador3/Label3
 @onready var label4 = $Control/SeccionInfo/TablaPosicion/indicador4/Label4
 
-@onready var seccion_pista = $Control/SeccionPista # Sección de la pista
+# Ruta al archivo JSON simulado
+var data_url = "res://data.json"
+var update_interval = 1.0 # Intervalo de actualización en segundos
+var update_timer = 0.0
 
-# Función que se llama cada frame
 func _process(delta):
-	handle_input(delta)
+	update_timer += delta
+	if update_timer >= update_interval:
+		update_timer = 0
+		update_bicycle_speeds()
+
 	update_positions(delta)
 	handle_screen_wrap()
 	update_positions_table()
+	update_bicycle_data_labels()
 
-
-# Manejo de la entrada del usuario para cada bicicleta
-func handle_input(delta):
-	# Maneja el control individual de cada bicicleta
-	for i in range(4):
-		if Input.is_action_pressed("gatillo_" + str(i + 1)): # Ejemplo: gatillo_1, gatillo_2, etc.
-			speeds[i] += accelerations[i] * delta
-			speeds[i] = min(speeds[i], max_speeds[i]) # Limita la velocidad a la máxima
+# Lee los datos del archivo JSON y actualiza las velocidades
+func update_bicycle_speeds():
+	if FileAccess.file_exists(data_url):
+		var content = FileAccess.get_file_as_string(data_url)
+		var json_parser = JSON.new()
+		var parse_result = json_parser.parse(content)
+		if parse_result == OK:
+			var json_data = json_parser.get_data()
+			var bicycles = json_data["bicycles"]
+			for i in range(min(bicycles.size(), speeds.size())):
+				speeds[i] = clamp(bicycles[i]["speed"], 0, max_speeds[i])
 		else:
-			# Aplica fricción para reducir la velocidad cuando se suelta el "gatillo"
-			speeds[i] -= frictions[i] * delta
-			speeds[i] = max(speeds[i], 0) # La velocidad no baja de cero
+			print("Error al parsear JSON:", json_parser.error_string)
+	else:
+		print("Archivo JSON no encontrado en:", data_url)
 
 # Actualiza las posiciones de cada bicicleta en el eje horizontal
 func update_positions(delta):
@@ -52,34 +66,46 @@ func handle_screen_wrap():
 	var pista_start = 0  # Inicio de la pista
 	var pista_end = 890  # Final de la pista
 
-	# Manejo del envolvimiento para cada bicicleta
 	for sprite in [sprite1, sprite2, sprite3, sprite4]:
 		if sprite.position.x > pista_end:
 			sprite.position.x = pista_start  # Regresa al inicio
 		elif sprite.position.x < pista_start:
 			sprite.position.x = pista_end  # Aparece al final
-			
-# Actualiza la tabla de posiciones 
-func update_positions_table(): 
-	var positions = [sprite1.position.x, sprite2.position.x, sprite3.position.x, sprite4.position.x] 
-	var sorted_indexes = [] 
-	var sorted_positions = positions.duplicate() 
-	sorted_positions.sort() 
-	
-	for pos in sorted_positions: sorted_indexes.append(positions.find(pos)) 
-	
-	# Actualiza las etiquetas con las posiciones 
-	label1.text = "Bicicleta " + str(sorted_indexes.find(0) + 1) + " (Primero)" 
-	label2.text = "Bicicleta " + str(sorted_indexes.find(1) + 1) + " (Segundo)" 
-	label3.text = "Bicicleta " + str(sorted_indexes.find(2) + 1) + " (Tercero)" 
+
+# Actualiza la tabla de posiciones
+func update_positions_table():
+	var positions = [sprite1.position.x, sprite2.position.x, sprite3.position.x, sprite4.position.x]
+	var sorted_indexes = []
+	var sorted_positions = positions.duplicate()
+	sorted_positions.sort()
+
+	for pos in sorted_positions:
+		sorted_indexes.append(positions.find(pos))
+
+	# Actualiza las etiquetas con las posiciones
+	label1.text = "Bicicleta " + str(sorted_indexes.find(0) + 1) + " (Primero)"
+	label2.text = "Bicicleta " + str(sorted_indexes.find(1) + 1) + " (Segundo)"
+	label3.text = "Bicicleta " + str(sorted_indexes.find(2) + 1) + " (Tercero)"
 	label4.text = "Bicicleta " + str(sorted_indexes.find(3) + 1) + " (Cuarto)"
-# Actualiza las etiquetas con las posiciones label1.text = "Bicicleta " + str(sorted_indexes.find(0) + 1) + " (Primero)" label2.text = "Bicicleta " + str(sorted_indexes.find(1) + 1) + " (Segundo)" label3.text = "Bicicleta " + str(sorted_indexes.find(2) + 1) + " (Tercero)" label4.text = "Bicicleta " + str(sorted_indexes.find(3) + 1) + " (Cuarto)"
 
+# Actualiza las etiquetas de velocidad de las bicicletas en "Datos"
+func update_bicycle_data_labels():
+	if label_datos_bici1:
+		label_datos_bici1.text = "🚴‍♂️ Bicicleta 1\nVelocidad: " + str(speeds[0]) + " km/h"
+		label_datos_bici1.add_theme_color_override("font_color", Color(1, 0, 0))  # Color rojo
+		label_datos_bici1.visible = true
 
-# Función que se llama cuando el nodo está listo
-#func _ready():
-#	var middle_height = seccion_pista.get_rect().size.y
-#	sprite1.position = Vector2(100, middle_height / 10)
-#	sprite2.position = Vector2(100, middle_height / 3)
-#	sprite3.position = Vector2(100, middle_height * 2 / 3)
-#	sprite4.position = Vector2(100, middle_height * 9 / 10)# Muy cerca de la parte inferior
+	if label_datos_bici2:
+		label_datos_bici2.text = "🚴‍♂️ Bicicleta 2\nVelocidad: " + str(speeds[1]) + " km/h"
+		label_datos_bici2.add_theme_color_override("font_color", Color(0, 1, 0))  # Color verde
+		label_datos_bici2.visible = true
+
+	if label_datos_bici3:
+		label_datos_bici3.text = "🚴‍♂️ Bicicleta 3\nVelocidad: " + str(speeds[2]) + " km/h"
+		label_datos_bici3.add_theme_color_override("font_color", Color(0, 0, 1))  # Color azul
+		label_datos_bici3.visible = true
+
+	if label_datos_bici4:
+		label_datos_bici4.text = "🚴‍♂️ Bicicleta 4\nVelocidad: " + str(speeds[3]) + " km/h"
+		label_datos_bici4.add_theme_color_override("font_color", Color(1, 1, 0))  # Color amarillo
+		label_datos_bici4.visible = true
