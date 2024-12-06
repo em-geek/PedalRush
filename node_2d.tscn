@@ -1,7 +1,10 @@
-[gd_scene load_steps=3 format=3 uid="uid://jt4bjndcbfgv"]
+[gd_scene load_steps=6 format=3 uid="uid://jt4bjndcbfgv"]
 
 [ext_resource type="Script" path="res://node_2d.gd" id="1_jrksl"]
 [ext_resource type="Texture2D" uid="uid://djtqota2tjftu" path="res://Bici.png" id="2_3sgjp"]
+[ext_resource type="Texture2D" uid="uid://dpbbxtd5lhvtf" path="res://Bici_azul.png" id="3_s67dd"]
+[ext_resource type="Texture2D" uid="uid://di23hwmgacuuc" path="res://Bici_rosa.png" id="4_mix8l"]
+[ext_resource type="Texture2D" uid="uid://dy8hrndjf11yt" path="res://Bici_Amarilla.png" id="5_ieo70"]
 
 [node name="Node2D" type="Node2D"]
 script = ExtResource("1_jrksl")
@@ -95,24 +98,24 @@ position = Vector2(113, 130)
 polygon = PackedVector2Array(-27, 18, 873, 18, 873, 26, -27, 26)
 
 [node name="Biker1" type="Sprite2D" parent="Control/SeccionPista"]
-position = Vector2(27, 26)
+position = Vector2(29, 245)
 scale = Vector2(0.01, 0.00996972)
 texture = ExtResource("2_3sgjp")
 
 [node name="Biker2" type="Sprite2D" parent="Control/SeccionPista"]
-position = Vector2(27, 98)
+position = Vector2(28, 174)
 scale = Vector2(0.01, 0.01)
-texture = ExtResource("2_3sgjp")
+texture = ExtResource("3_s67dd")
 
 [node name="Biker3" type="Sprite2D" parent="Control/SeccionPista"]
-position = Vector2(26, 169)
+position = Vector2(28, 97)
 scale = Vector2(0.01, 0.01)
-texture = ExtResource("2_3sgjp")
+texture = ExtResource("4_mix8l")
 
 [node name="Biker4" type="Sprite2D" parent="Control/SeccionPista"]
-position = Vector2(30, 244)
+position = Vector2(28, 26)
 scale = Vector2(0.01, 0.01)
-texture = ExtResource("2_3sgjp")
+texture = ExtResource("5_ieo70")
 
 [node name="SeccionJugadores" type="Control" parent="Control"]
 layout_mode = 1
