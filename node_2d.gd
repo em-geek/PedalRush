@@ -8,6 +8,8 @@ var max_speeds = [400.0, 400.0, 400.0, 400.0] # Velocidades máximas de cada bic
 var distances = [0.0, 0.0, 0.0, 0.0] # Distancia recorrida por cada bicicleta (km)
 var total_time = 0.0 # Tiempo total transcurrido (s)
 var calorie_factor = 30.0 # Factor para calcular calorías quemadas por km
+var save_interval = 60.0 # Intervalo de guardado en segundos 
+var save_timer = 0.0
 
 # Referencias a los cuatro sprites
 @onready var sprite1 = $Control/SeccionPista/Biker1
@@ -48,9 +50,15 @@ var update_timer = 0.0
 func _process(delta):
 	update_timer += delta
 	total_time += delta  # Incrementa el tiempo total
+	save_timer += delta
+	
 	if update_timer >= update_interval:
 		update_timer = 0
 		update_bicycle_speeds()
+		
+	if save_timer >= save_interval:
+		save_timer = 0 
+		save_data_to_json()
 
 	update_positions(delta)
 	handle_screen_wrap()
@@ -171,3 +179,54 @@ func update_simulation_info(delta):
 		
 	if labelTiempo:
 		labelTiempo.text = "Tiempo: %02d:%02d" % [int(total_time / 60), int(total_time) % 60]
+
+func save_data_to_json(): 
+ 		# Obtener la fecha y hora actuales 
+		var current_date = Time.get_datetime_dict_from_system()
+		var formatted_date = "%d-%02d-%02d %02d:%02d:%02d" % [current_date.year, current_date.month, current_date.day, current_date.hour, current_date.minute, current_date.second] 
+		
+		
+		# Crear un diccionario para los datos 
+		var data = { 
+			"datetime": formatted_date, 
+			"time": total_time, 
+			"bicycles": [] 
+		} 
+		# Añadir datos de cada bicicleta 
+		for i in range(4): 
+			data["bicycles"].append({ 
+				"bicycle": i + 1, 
+				"distance": distances[i], 
+				"calories": distances[i] * calorie_factor 
+			}) 
+			
+		 # Leer los datos anteriores del archivo JSON, si existe 
+		var log_data = {"logs": []} 
+		if FileAccess.file_exists("user://log_data.json"): 
+			var file = FileAccess.open("user://log_data.json", FileAccess.READ) 
+			var content = file.get_as_text() 
+			file.close()
+			 
+			var json_parser = JSON.new() 
+			var parse_result = json_parser.parse(content) 
+			if parse_result == OK: 
+				log_data = json_parser.get_data() 
+			else: 
+				print("Error al parsear JSON:", json_parser.error_string) 
+				
+		 # Si 'logs' no existe en log_data, crearlo 
+		if not log_data.has("logs"): 
+			log_data["logs"] = []
+				
+		# Añadir el nuevo registro 
+		log_data["logs"].append(data) 
+		
+		# Convertir el diccionario a JSON y formatearlo con indentación 
+		var json_formatter = JSON.new()
+		var json_data = json_formatter.stringify(log_data, "\t")
+		
+		# Guardar los datos en un archivo 
+		var file = FileAccess.open("res://log_data.json", FileAccess.WRITE) 
+		file.store_string(json_data + "\n") # Añadir salto de línea para mejorar la legibilidad 
+		file.close() 
+		print("Datos guardados en log_data.json")
