@@ -28,17 +28,17 @@ var calorie_factor = 30.0 # Factor para calcular calorías quemadas por km
 @onready var label4 = $Control/SeccionInfo/TablaPosicion/indicador4/Label4
 
 # Informacion sobre Distancia, Tiempo y Calorias
-@onready var labelCaloriasB1 = $Control/SeccionInfo/InformacionRecorrido/InfoTiempo/LabelCB1
-@onready var labelCaloriasB2 = $Control/SeccionInfo/InformacionRecorrido/InfoTiempo/LabelCB2
-@onready var labelCaloriasB3 = $Control/SeccionInfo/InformacionRecorrido/InfoTiempo/LabelCB3
-@onready var labelCaloriasB4 = $Control/SeccionInfo/InformacionRecorrido/InfoTiempo/LabelCB4
+@onready var labelCaloriasB1 = $Control/SeccionInfo/InformacionRecorrido/InfoCalorias/LabelCB1
+@onready var labelCaloriasB2 = $Control/SeccionInfo/InformacionRecorrido/InfoCalorias/LabelCB2
+@onready var labelCaloriasB3 = $Control/SeccionInfo/InformacionRecorrido/InfoCalorias/LabelCB3
+@onready var labelCaloriasB4 = $Control/SeccionInfo/InformacionRecorrido/InfoCalorias/LabelCB4
 
 @onready var labelDistanciaB1 = $Control/SeccionInfo/InformacionRecorrido/InfoDistancia/LabelDB1
 @onready var labelDistanciaB2 = $Control/SeccionInfo/InformacionRecorrido/InfoDistancia/LabelDB2
 @onready var labelDistanciaB3 = $Control/SeccionInfo/InformacionRecorrido/InfoDistancia/LabelDB3
 @onready var labelDistanciaB4 = $Control/SeccionInfo/InformacionRecorrido/InfoDistancia/LabelDB4
 
-@onready var labelTiempo = $Control/SeccionInfo/InformacionRecorrido/InfoCalorias/LabelT
+@onready var labelTiempo = $Control/SeccionInfo/InformacionRecorrido/InfoTiempo/LabelT
 
 # Ruta al archivo JSON simulado
 var data_url = "res://data.json"
@@ -97,21 +97,23 @@ func handle_screen_wrap():
 		elif sprite.position.x < pista_start:
 			sprite.position.x = pista_end  # Aparece al final
 
-# Actualiza la tabla de posiciones
+# Actualiza la tabla de posiciones basándose en las distancias recorridas
 func update_positions_table():
-	var positions = [sprite1.position.x, sprite2.position.x, sprite3.position.x, sprite4.position.x]
-	var sorted_indexes = []
-	var sorted_positions = positions.duplicate()
-	sorted_positions.sort()
+	# Ordena las bicicletas según la distancia recorrida (de mayor a menor)
+	var sorted_distances = distances.duplicate()
+	sorted_distances.sort()
+	sorted_distances.reverse()  # Usar el método reverse() para invertir la lista
 
-	for pos in sorted_positions:
-		sorted_indexes.append(positions.find(pos))
+	# Encuentra los índices originales para las distancias ordenadas
+	var sorted_indexes = []
+	for distance in sorted_distances:
+		sorted_indexes.append(distances.find(distance))
 
 	# Actualiza las etiquetas con las posiciones
-	label1.text = "Bicicleta " + str(sorted_indexes.find(0) + 1) + " (Primero)"
-	label2.text = "Bicicleta " + str(sorted_indexes.find(1) + 1) + " (Segundo)"
-	label3.text = "Bicicleta " + str(sorted_indexes.find(2) + 1) + " (Tercero)"
-	label4.text = "Bicicleta " + str(sorted_indexes.find(3) + 1) + " (Cuarto)"
+	label1.text = "Bicicleta " + str(sorted_indexes[0] + 1) + " (Primero)"
+	label2.text = "Bicicleta " + str(sorted_indexes[1] + 1) + " (Segundo)"
+	label3.text = "Bicicleta " + str(sorted_indexes[2] + 1) + " (Tercero)"
+	label4.text = "Bicicleta " + str(sorted_indexes[3] + 1) + " (Cuarto)"
 
 # Actualiza las etiquetas de velocidad de las bicicletas en "Datos"
 func update_bicycle_data_labels():
@@ -143,12 +145,29 @@ func update_bicycle_data_labels():
 func update_simulation_info(delta):
 
 	# Calcula las calorías quemadas por la primera bicicleta
-	var total_calories = distances[0] * calorie_factor
+	var total_caloriesB1 = distances[0] * calorie_factor
+	var total_caloriesB2 = distances[1] * calorie_factor
+	var total_caloriesB3 = distances[2] * calorie_factor
+	var total_caloriesB4 = distances[3] * calorie_factor
 
 	# Actualiza los Labels
 	if labelDistanciaB1:
-		labelDistanciaB1.text = "Distancia:\n %.2f km" % distances[0]
+		labelDistanciaB1.text = "Distancia: %.2f km" % distances[0]
+	if labelDistanciaB2:
+		labelDistanciaB2.text = "Distancia: %.2f km" % distances[1]
+	if labelDistanciaB3:
+		labelDistanciaB3.text = "Distancia: %.2f km" % distances[2]
+	if labelDistanciaB4:
+		labelDistanciaB4.text = "Distancia: %.2f km" % distances[3]
+		
 	if labelCaloriasB1:
-		labelCaloriasB1.text = "Calorías Quemadas:\n %.2f kcal" % total_calories
+		labelCaloriasB1.text = "Calorías Quemadas: %.2f kcal" % total_caloriesB1
+	if labelCaloriasB2:
+		labelCaloriasB2.text = "Calorías Quemadas: %.2f kcal" % total_caloriesB2
+	if labelCaloriasB3:
+		labelCaloriasB3.text = "Calorías Quemadas: %.2f kcal" % total_caloriesB3
+	if labelCaloriasB4:
+		labelCaloriasB4.text = "Calorías Quemadas: %.2f kcal" % total_caloriesB4
+		
 	if labelTiempo:
-		labelTiempo.text = "Tiempo:\n %02d:%02d" % [int(total_time / 60), int(total_time) % 60]
+		labelTiempo.text = "Tiempo: %02d:%02d" % [int(total_time / 60), int(total_time) % 60]
