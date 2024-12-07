@@ -28,9 +28,17 @@ var calorie_factor = 30.0 # Factor para calcular calorías quemadas por km
 @onready var label4 = $Control/SeccionInfo/TablaPosicion/indicador4/Label4
 
 # Informacion sobre Distancia, Tiempo y Calorias
-@onready var labelCalorias = $Control/SeccionInfo/InformacionRecorrido/InfoTiempo/LabelT
-@onready var labelDistancia = $Control/SeccionInfo/InformacionRecorrido/InfoDistancia/LabelD
-@onready var labelTiempo = $Control/SeccionInfo/InformacionRecorrido/InfoCalorias/LabelC
+@onready var labelCaloriasB1 = $Control/SeccionInfo/InformacionRecorrido/InfoTiempo/LabelCB1
+@onready var labelCaloriasB2 = $Control/SeccionInfo/InformacionRecorrido/InfoTiempo/LabelCB2
+@onready var labelCaloriasB3 = $Control/SeccionInfo/InformacionRecorrido/InfoTiempo/LabelCB3
+@onready var labelCaloriasB4 = $Control/SeccionInfo/InformacionRecorrido/InfoTiempo/LabelCB4
+
+@onready var labelDistanciaB1 = $Control/SeccionInfo/InformacionRecorrido/InfoDistancia/LabelDB1
+@onready var labelDistanciaB2 = $Control/SeccionInfo/InformacionRecorrido/InfoDistancia/LabelDB2
+@onready var labelDistanciaB3 = $Control/SeccionInfo/InformacionRecorrido/InfoDistancia/LabelDB3
+@onready var labelDistanciaB4 = $Control/SeccionInfo/InformacionRecorrido/InfoDistancia/LabelDB4
+
+@onready var labelTiempo = $Control/SeccionInfo/InformacionRecorrido/InfoCalorias/LabelT
 
 # Ruta al archivo JSON simulado
 var data_url = "res://data.json"
@@ -138,9 +146,9 @@ func update_simulation_info(delta):
 	var total_calories = distances[0] * calorie_factor
 
 	# Actualiza los Labels
-	if labelDistancia:
-		labelDistancia.text = "Distancia:\n %.2f km" % distances[0]
-	if labelCalorias:
-		labelCalorias.text = "Calorías Quemadas:\n %.2f kcal" % total_calories
+	if labelDistanciaB1:
+		labelDistanciaB1.text = "Distancia:\n %.2f km" % distances[0]
+	if labelCaloriasB1:
+		labelCaloriasB1.text = "Calorías Quemadas:\n %.2f kcal" % total_calories
 	if labelTiempo:
 		labelTiempo.text = "Tiempo:\n %02d:%02d" % [int(total_time / 60), int(total_time) % 60]
