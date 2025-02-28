@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://cjrl7ldl7o31m"]
+
+[ext_resource type="Script" path="res://bicycle.gd" id="1_n4qph"]
+
+[node name="Bicycle" type="Node2D"]
+script = ExtResource("1_n4qph")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]

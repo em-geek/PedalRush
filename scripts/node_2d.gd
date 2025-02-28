@@ -47,10 +47,22 @@ var data_url = "res://data.json"
 var update_interval = 1.0 # Intervalo de actualización en segundos
 var update_timer = 0.0
 
+var lap_counts = [0, 0, 0, 0]  # Vueltas completadas por cada bicicleta
+var laps_to_complete = 3  # Número de vueltas necesarias para terminar la carrera
+
+var pista_start = 0  # Inicio de la pista
+var pista_end = 1200  # Final de la pista
+
+var race_finished = false  # Variable para saber si la carrera ha terminado
+
+
 func _process(delta):
 	update_timer += delta
 	total_time += delta  # Incrementa el tiempo total
 	save_timer += delta
+	
+	if race_finished:
+		return
 	
 	if update_timer >= update_interval:
 		update_timer = 0
@@ -68,6 +80,9 @@ func _process(delta):
 
 # Lee los datos del archivo JSON y actualiza las velocidades
 func update_bicycle_speeds():
+	if race_finished:
+		return
+	
 	if FileAccess.file_exists(data_url):
 		var content = FileAccess.get_file_as_string(data_url)
 		var json_parser = JSON.new()
@@ -97,14 +112,15 @@ func update_positions(delta):
 # Función para manejar el envolvimiento de la pantalla para cada bicicleta
 func handle_screen_wrap():
 	var pista_start = 0  # Inicio de la pista
-	var pista_end = 890  # Final de la pista
-
-	for sprite in [sprite1, sprite2, sprite3, sprite4]:
+	for i in range(4):
+		var sprite = [sprite1, sprite2, sprite3, sprite4][i]
 		if sprite.position.x > pista_end:
 			sprite.position.x = pista_start  # Regresa al inicio
+			lap_counts[i] += 1  # Aumenta la cuenta de vueltas
+			check_race_completion()  # Verifica si alguien terminó la carrera
 		elif sprite.position.x < pista_start:
 			sprite.position.x = pista_end  # Aparece al final
-
+			
 # Actualiza la tabla de posiciones basándose en las distancias recorridas
 func update_positions_table():
 	# Ordena las bicicletas según la distancia recorrida (de mayor a menor)
@@ -116,12 +132,10 @@ func update_positions_table():
 	var sorted_indexes = []
 	for distance in sorted_distances:
 		sorted_indexes.append(distances.find(distance))
-
-	# Actualiza las etiquetas con las posiciones
-	label1.text = "Bicicleta " + str(sorted_indexes[0] + 1) + " (Primero)"
-	label2.text = "Bicicleta " + str(sorted_indexes[1] + 1) + " (Segundo)"
-	label3.text = "Bicicleta " + str(sorted_indexes[2] + 1) + " (Tercero)"
-	label4.text = "Bicicleta " + str(sorted_indexes[3] + 1) + " (Cuarto)"
+		
+	# Aplicar efecto de glow solo al ciclista en primer lugar
+	var first_place_index = sorted_indexes[0]
+	var sprites = [sprite1, sprite2, sprite3, sprite4]
 
 # Actualiza las etiquetas de velocidad de las bicicletas en "Datos"
 func update_bicycle_data_labels():
@@ -180,6 +194,15 @@ func update_simulation_info(delta):
 	if labelTiempo:
 		labelTiempo.text = "Tiempo: %02d:%02d" % [int(total_time / 60), int(total_time) % 60]
 
+func check_race_completion():
+	for i in range(4):
+		if lap_counts[i] >= laps_to_complete:
+			print("¡Bicicleta", i + 1, "ha terminado la carrera!")
+			speeds[i] = 0  # Detener la bicicleta ganadora
+			race_finished = true  # Marcar que la carrera ha terminado
+			stop_simulation()  # Llamar a una función para detener la simulación
+			break  # Detener el ciclo al encontrar un ganador
+
 func save_data_to_json(): 
  		# Obtener la fecha y hora actuales 
 		var current_date = Time.get_datetime_dict_from_system()
@@ -230,3 +253,9 @@ func save_data_to_json():
 		file.store_string(json_data + "\n") # Añadir salto de línea para mejorar la legibilidad 
 		file.close() 
 		print("Datos guardados en log_data.json")
+
+# Detener la simulación si la carrera ha terminado
+func stop_simulation():
+	if race_finished:
+		speeds = [0, 0, 0, 0]  # Detener todas las bicicletas
+		print("La carrera ha terminado.")

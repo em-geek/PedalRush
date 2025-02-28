@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dy8hrndjf11yt"
-path="res://.godot/imported/Bici_Amarilla.png-6dfb9a98217ff43b113b49b36be30e61.ctex"
+uid="uid://c5w6jcxsqcd4u"
+path="res://.godot/imported/Bici_verde.png-0d29e409e6f63c8e6491a7afdbcd0665.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Bici_Amarilla.png"
-dest_files=["res://.godot/imported/Bici_Amarilla.png-6dfb9a98217ff43b113b49b36be30e61.ctex"]
+source_file="res://art/Bici_verde.png"
+dest_files=["res://.godot/imported/Bici_verde.png-0d29e409e6f63c8e6491a7afdbcd0665.ctex"]
 
 [params]
 

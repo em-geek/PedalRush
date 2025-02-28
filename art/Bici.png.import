@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://tgsk2jyvhl8n"
-path="res://.godot/imported/Mario.png-323ac103b30e65afc714c6990f1d76ce.ctex"
+uid="uid://djtqota2tjftu"
+path="res://.godot/imported/Bici.png-1317f54171c3badd5066805ba4fd723e.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Mario.png"
-dest_files=["res://.godot/imported/Mario.png-323ac103b30e65afc714c6990f1d76ce.ctex"]
+source_file="res://art/Bici.png"
+dest_files=["res://.godot/imported/Bici.png-1317f54171c3badd5066805ba4fd723e.ctex"]
 
 [params]
 
