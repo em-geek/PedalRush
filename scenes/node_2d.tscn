@@ -1,8 +1,11 @@
-[gd_scene load_steps=6 format=3 uid="uid://jt4bjndcbfgv"]
+[gd_scene load_steps=9 format=3 uid="uid://jt4bjndcbfgv"]
 
 [ext_resource type="Script" path="res://scripts/node_2d.gd" id="1_ic10d"]
 [ext_resource type="Texture2D" uid="uid://djtqota2tjftu" path="res://art/Bici.png" id="2_rk36u"]
+[ext_resource type="Texture2D" uid="uid://d12js8nehlh5w" path="res://art/pista inicio.png" id="2_slfj2"]
 [ext_resource type="Texture2D" uid="uid://dpbbxtd5lhvtf" path="res://art/Bici_azul.png" id="3_416dc"]
+[ext_resource type="Texture2D" uid="uid://bhriaujal2yp1" path="res://art/pista medio.png" id="3_pmeen"]
+[ext_resource type="Texture2D" uid="uid://crh8282uyi1lk" path="res://art/pista fianl.png" id="4_d270s"]
 [ext_resource type="Texture2D" uid="uid://di23hwmgacuuc" path="res://art/Bici_rosa.png" id="4_mq7m7"]
 [ext_resource type="Texture2D" uid="uid://dy8hrndjf11yt" path="res://art/Bici_Amarilla.png" id="5_taevm"]
 
@@ -109,23 +112,20 @@ offset_right = 40.0
 offset_bottom = 40.0
 metadata/_edit_use_anchors_ = true
 
-[node name="BasePista" type="Polygon2D" parent="Control/SeccionPista"]
-position = Vector2(-108, 56)
-scale = Vector2(1.27349, 1.00133)
-color = Color(0.0954428, 0.491361, 0.171693, 1)
-polygon = PackedVector2Array(86, -65, 986, -65, 986, 77.0428, 986, 221, 86, 221)
+[node name="pista inicio" type="Sprite2D" parent="Control/SeccionPista"]
+position = Vector2(188.5, 134.5)
+scale = Vector2(0.375977, 0.280273)
+texture = ExtResource("2_slfj2")
 
-[node name="Division 1" type="Polygon2D" parent="Control/SeccionPista/BasePista"]
-position = Vector2(113, -16)
-polygon = PackedVector2Array(-27, 18, 873, 18, 873, 26, -27, 26)
+[node name="pista medio" type="Sprite2D" parent="Control/SeccionPista"]
+position = Vector2(609.25, 134.5)
+scale = Vector2(0.447754, 0.280273)
+texture = ExtResource("3_pmeen")
 
-[node name="Division 2" type="Polygon2D" parent="Control/SeccionPista/BasePista"]
-position = Vector2(113, 57)
-polygon = PackedVector2Array(-27, 18, 873, 18, 873, 26, -27, 26)
-
-[node name="Division 3" type="Polygon2D" parent="Control/SeccionPista/BasePista"]
-position = Vector2(113, 130)
-polygon = PackedVector2Array(-27, 18, 873, 18, 873, 26, -27, 26)
+[node name="pista final" type="Sprite2D" parent="Control/SeccionPista"]
+position = Vector2(995, 134.5)
+scale = Vector2(0.306641, 0.280273)
+texture = ExtResource("4_d270s")
 
 [node name="Biker1" type="Sprite2D" parent="Control/SeccionPista"]
 position = Vector2(29, 245)
